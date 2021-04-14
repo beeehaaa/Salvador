@@ -15,14 +15,20 @@ import {
   View,
 } from 'react-native';
 
+
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignupScreen';
 import CreateAdScreen from './screens/CreateAdScreen';
 import HomeScreen from './screens/ListItemScreen';
+import SplashScreen from './screens/Splash';
 
 
-
-import {  DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 const theme = {
   ...DefaultTheme,
@@ -34,17 +40,42 @@ const theme = {
   },
 };
 
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const AuthNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="logn" component={LoginScreen} />
+      <Stack.Screen name="signup" component={SignUpScreen} />
+      <Stack.Screen name="splash" component={SplashScreen} />
+    </Stack.Navigator>
+  )
+};
+
+const TabNavigator = () => {
+  return (
+
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="create" component={CreateAdScreen} />
+      </Tab.Navigator>
+  )
+}
+const Navigation = () => {
+  return (
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
+  )
+};
 const App = () => {
   return (
     <>
-    <PaperProvider theme={theme}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
-      <View style={styles.container}>
-        {/* <LoginScreen /> */}
-        {/* <SignUpScreen/> */}
-        {/* <CreateAdScreen/> */}
-        <HomeScreen/>
-      </View>
+      <PaperProvider theme={theme}>
+        <StatusBar barStyle="light-content" backgroundColor="black" />
+        <View style={styles.container}>
+            <Navigation />
+        </View>
       </PaperProvider>
     </>
   );
