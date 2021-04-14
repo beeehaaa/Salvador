@@ -1,3 +1,5 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -17,34 +19,24 @@ import {
   View,
 } from 'react-native';
 
+import LoginScreen from "./screens/LoginScreen";
 
 const App = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-     <SafeAreaView>
-      <Text>Hello World</Text>
-    </SafeAreaView>
+      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <View style={styles.container}>
+        <LoginScreen />
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    
   },
 });
 
