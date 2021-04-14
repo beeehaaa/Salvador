@@ -12,6 +12,12 @@ var bg = require('../assets/bg.jpg');
 var logo = require('../assets/LogoB.png');
 
 export default class Splash extends Component {
+    constructor(props) {
+        super(props);
+        setTimeout(() => {
+            this.props.navigation.navigate("login");
+        }, 5000);
+    }
     render() {
         return (
             <ImageBackground

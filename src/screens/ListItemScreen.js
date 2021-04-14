@@ -32,7 +32,7 @@ const ListItemScreen = () => {
     const renderIntem = (item) => {
         return (
             <Card style={styles.card}>
-                <Card.Title title={item.name}  />
+                <Card.Title title={item.name} />
                 <Card.Content>
                     <Paragraph>{item.description}</Paragraph>
                 </Card.Content>
@@ -45,13 +45,13 @@ const ListItemScreen = () => {
         )
     }
     return (
-       
+
         <View>
-                <FlatList
-                    data={myitems}
-                    keyExtractor={(item) => item.contactNumber}
-                    renderItem={({ item }) => renderIntem(item)}
-                />
+            <FlatList
+                data={myitems}
+                keyExtractor={(item) => item.contactNumber}
+                renderItem={({ item }) => renderIntem(item)}
+            />
         </View>
     )
 }
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         margin: 10,
         elevation: 2,
     },
-   
+
 });
 
 export default ListItemScreen;

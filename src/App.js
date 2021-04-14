@@ -1,3 +1,4 @@
+/* eslint-disable semi */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable prettier/prettier */
 /**
@@ -26,6 +27,7 @@ import SignUpScreen from './screens/SignupScreen';
 import CreateAdScreen from './screens/CreateAdScreen';
 import HomeScreen from './screens/ListItemScreen';
 import SplashScreen from './screens/Splash';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
@@ -45,9 +47,9 @@ const Tab = createBottomTabNavigator();
 const AuthNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="logn" component={LoginScreen} />
-      <Stack.Screen name="signup" component={SignUpScreen} />
-      <Stack.Screen name="splash" component={SplashScreen} />
+      <Stack.Screen name="splash" component={SplashScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="signup" component={SignUpScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="login" component={LoginScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 };
@@ -55,16 +57,36 @@ const AuthNavigator = () => {
 const TabNavigator = () => {
   return (
 
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="create" component={CreateAdScreen} />
-      </Tab.Navigator>
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({  color }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = 'home'
+        } 
+        else if (route.name === 'create'){
+          iconName = 'plus';
+        }
+        // You can return any component that you like here!
+        return <View style={styles.botBar}><Entypo name={iconName} color={color} size={33} /></View>
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: 'black',
+      inactiveTintColor: 'gray',
+    }}>
+      <Tab.Screen name="Home" component={HomeScreen} options={{title: ''}}/>
+      <Tab.Screen name="create" component={CreateAdScreen} options={{title: ''}} />
+    </Tab.Navigator>
   )
 }
 const Navigation = () => {
+  const user = 'dfs';
   return (
     <NavigationContainer>
-      <TabNavigator />
+      {user ? <TabNavigator /> : <AuthNavigator />}
+
+
     </NavigationContainer>
   )
 };
@@ -74,7 +96,7 @@ const App = () => {
       <PaperProvider theme={theme}>
         <StatusBar barStyle="light-content" backgroundColor="black" />
         <View style={styles.container}>
-            <Navigation />
+          <Navigation />
         </View>
       </PaperProvider>
     </>
@@ -86,6 +108,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  // botBar:{
+  //   borderWidth: 1,
+  //   borderRadius : 35,
+  //   paddingBottom: 5,
+  //   marginTop: 5
+  // },
 });
 
 export default App;
