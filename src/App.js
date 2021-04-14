@@ -10,24 +10,42 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
-import LoginScreen from "./screens/LoginScreen";
+import LoginScreen from './screens/LoginScreen';
+import SignUpScreen from './screens/SignupScreen';
+import CreateAdScreen from './screens/CreateAdScreen';
+import HomeScreen from './screens/ListItemScreen';
+
+
+
+import {  DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#381f47',
+    accent: 'blue',
+  },
+};
 
 const App = () => {
   return (
     <>
+    <PaperProvider theme={theme}>
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <View style={styles.container}>
-        <LoginScreen />
+        {/* <LoginScreen /> */}
+        {/* <SignUpScreen/> */}
+        {/* <CreateAdScreen/> */}
+        <HomeScreen/>
       </View>
+      </PaperProvider>
     </>
   );
 };
@@ -36,7 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    
   },
 });
 

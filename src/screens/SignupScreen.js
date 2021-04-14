@@ -3,16 +3,26 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity,KeyboardAvoidingView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
   const [email, setEmail] = useState('');
+  const [userName, setName] = useState('');
   const [password, setPassword] = useState('');
   return (
     <KeyboardAvoidingView behavior="position">
       <View style={styles.imageContainer}>
         <Image style={styles.imgTag} source={require('../assets/mainLogo.png')} />
-        <Text style={styles.textTag}>Please login to continue</Text>
+        <Text style={styles.textTag}>Create Account.</Text>
+        <Text style={styles.sub}>Sign up to get started!</Text>
       </View>
       <View >
+      <TextInput
+        style={styles.textInpStyle}
+        underlineColor=""
+        label="Name"
+        value={userName}
+        onChangeText={text => setName(text)}
+        mode="flat"
+      />
       <TextInput
         style={styles.textInpStyle}
         underlineColor=""
@@ -34,14 +44,14 @@ export default function LoginScreen() {
         mode="contained"
         onPress={() => console.log('Sign In pressed')}
       >
-        SIGN IN
+        SIGN UP
         </Button>
       <TouchableOpacity>
         <Text
           onPress={() => console.log('Presesed')}
           style={styles.subText}
         >
-          I'm a new user</Text>
+          I already have an account</Text>
       </TouchableOpacity>
 
       </View>
@@ -52,7 +62,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
-    marginTop: 70,
+    marginTop: 60,
   },
   imgTag: {
     width: 200,
@@ -62,7 +72,7 @@ const styles = StyleSheet.create({
   textInpStyle: {
     marginLeft: 18,
     marginRight: 18,
-    marginTop: 10,
+    marginTop: 5,
     backgroundColor: 'white',
   },
   btnStyle: {
@@ -84,5 +94,8 @@ const styles = StyleSheet.create({
   textTag: {
     fontSize: 22,
     fontWeight: 'bold',
+  },
+  sub: {
+    fontSize: 15,
   },
 });
