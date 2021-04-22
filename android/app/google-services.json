@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "952176668518",
+    "project_id": "salvadorreactnative",
+    "storage_bucket": "salvadorreactnative.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952176668518:android:5efad4870811e6739222a7",
+        "android_client_info": {
+          "package_name": "com.salvador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952176668518-fga1nktci2q8s03t1ar0f753aa244ckm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCtrlijhqldM9-h7KxUIa67kfCJDhVSzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952176668518-fga1nktci2q8s03t1ar0f753aa244ckm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

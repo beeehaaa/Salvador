@@ -1,11 +1,35 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi */
+/* eslint-disable keyword-spacing */
 /* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView,Alert } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import auth from '@react-native-firebase/auth';
 
 export default function LoginScreen(props) {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  var result;
+  const userLogin = async ()=>{
+      if(!email  || !password){
+           Alert.alert('Please add all fields!');
+           return
+      }
+      try{
+          result = await auth().signInWithEmailAndPassword(email,password)
+          console.log(result.user);
+      }
+      catch(err){
+          Alert.alert('Something went wrong! Please try different password');
+      }
+     
+  }
+  
+  
   return (
     <KeyboardAvoidingView behavior="position">
       <View style={styles.imageContainer}>
@@ -32,7 +56,7 @@ export default function LoginScreen(props) {
         <Button
           style={styles.btnStyle}
           mode="contained"
-          onPress={() => console.log('Sign In pressed')}
+          onPress={() => userLogin()}
         >
           SIGN IN
         </Button>
