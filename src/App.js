@@ -94,7 +94,7 @@ const TabNavigator = () => {
 const Navigation = () => {
   const [user,setUser] = useState('');
   useEffect(()=>{
-    auth().onAuthStateChanged((userExist)=>{
+    const unsubscribe = auth().onAuthStateChanged((userExist)=>{
       if (userExist){
         setUser(userExist)
       }
@@ -102,6 +102,7 @@ const Navigation = () => {
         setUser('')
       }
     })
+    return unsubscribe
   },[])
   return (
     <NavigationContainer  theme={navTheme}>

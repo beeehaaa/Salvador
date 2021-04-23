@@ -1,7 +1,14 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi */
+/* eslint-disable keyword-spacing */
 /* eslint-disable prettier/prettier */
+
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView,Alert,SafeAreaView, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const CreateAdScreen = () => {
     const [name, setName] = useState('');
@@ -12,9 +19,33 @@ const CreateAdScreen = () => {
     const [contactName, setContactName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
 
+    const postData = async () => {
+        try {
+            await firestore().collection('ads')
+                .add({
+                    name,
+                    desc,
+                    type,
+                    breed,
+                    age,
+                    contactName,
+                    contactNumber,
+                    image: 'https://i.guim.co.uk/img/media/684c9d087dab923db1ce4057903f03293b07deac/205_132_1915_1150/master/1915.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=14a95b5026c1567b823629ba35c40aa0',
+                    uid: auth().currentUser.uid,
+                })
+                Alert.alert('posted your Ad!')
+
+        }
+        catch (err) {
+            Alert.alert('Something went wrong. Try again!')
+        }
+    }
     return (
-       
+        <SafeAreaView>
+        <ScrollView >
+
         <KeyboardAvoidingView behavior="position" style={styles.container}>
+       
             <Text style={styles.textTag}>Create a Post</Text>
             <TextInput
                 style={styles.textInpStyle}
@@ -85,11 +116,14 @@ const CreateAdScreen = () => {
         </Button>
             <Button style={styles.btnStyle}
                 mode="contained"
-                onPress={() => console.log('Sign In pressed')}
+                onPress={() => postData()}
             >
                 SUBMIT POST
         </Button>
+
         </KeyboardAvoidingView>
+        </ScrollView>
+    </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
@@ -108,7 +142,7 @@ const styles = StyleSheet.create({
     textInpStyle: {
         marginLeft: 10,
         marginRight: 18,
-        marginTop: 3,
+        marginTop: 5,
         backgroundColor: 'white',
     },
     btnStyle: {
@@ -128,7 +162,7 @@ const styles = StyleSheet.create({
         color: '#381f47',
     },
     textTag: {
-        marginTop: 5,
+        marginTop: 25,
         fontSize: 22,
         fontWeight: 'bold',
         textAlign: 'center',

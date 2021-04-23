@@ -1,10 +1,13 @@
 /* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unused-vars */
 /* eslint-disable semi */
+/* eslint-disable keyword-spacing */
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import { TextInput, Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableOpacity, KeyboardAvoidingView,Linking,Platform } from 'react-native';
+import { TextInput, Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
 
 const ListItemScreen = () => {
     const myitems = [
@@ -29,17 +32,38 @@ const ListItemScreen = () => {
             image: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
         },
     ]
+    const [items, setItems] = useState([])
+    const getDetails = async () => {
+        const querySnap = await firestore().collection('ads').get()
+        const result = querySnap.docs.map(docSnap => docSnap.data())
+        console.log(result)
+        setItems(result)
+    }
+    const openDial = (phone) =>{
+        if(Platform.OS === 'android'){
+            Linking.openURL(`tel:${phone}`)
+        }
+        else{
+            Linking.openURL(`telprompt:${phone}`)
+        }
+    }
+    useEffect(() => {
+        getDetails()
+        return ()=>{
+            console.log('Clean Up');
+        }
+    }, [])
     const renderIntem = (item) => {
         return (
             <Card style={styles.card}>
                 <Card.Title title={item.name} />
                 <Card.Content>
-                    <Paragraph>{item.description}</Paragraph>
+                    <Paragraph>{item.desc}</Paragraph>
                 </Card.Content>
                 <Card.Cover source={{ uri: item.image }} />
                 <Card.Actions>
                     <Button>Adopt Me </Button>
-                    <Button>Call Seller</Button>
+                    <Button onPress={()=>openDial()}>Call Seller</Button>
                 </Card.Actions>
             </Card>
         )
@@ -48,13 +72,14 @@ const ListItemScreen = () => {
 
         <View>
             <FlatList
-                data={myitems}
+                data={items}
                 keyExtractor={(item) => item.contactNumber}
                 renderItem={({ item }) => renderIntem(item)}
             />
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     card: {
