@@ -9,6 +9,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView,A
 import { TextInput, Button } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const CreateAdScreen = () => {
     const [name, setName] = useState('');
@@ -39,6 +40,11 @@ const CreateAdScreen = () => {
         catch (err) {
             Alert.alert('Something went wrong. Try again!')
         }
+    }
+    const accessCamera = ()=>{
+        launchCamera({quality:0.5},(fileobj)=>{
+            console.log(fileobj)
+        })
     }
     return (
         <SafeAreaView>
@@ -110,7 +116,7 @@ const CreateAdScreen = () => {
             <Button icon="camera"
                 style={styles.btnStyle}
                 mode="contained"
-                onPress={() => console.log('Sign In pressed')}
+                onPress={() => accessCamera()}
             >
                 UPLOAD IMAGE
         </Button>
