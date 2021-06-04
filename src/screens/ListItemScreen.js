@@ -75,6 +75,7 @@ const ListItemScreen = () => {
                 data={items}
                 keyExtractor={(item) => item.contactNumber}
                 renderItem={({ item }) => renderIntem(item)}
+                inverted={true}
             />
         </View>
     )

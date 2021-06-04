@@ -5,11 +5,12 @@
 /* eslint-disable prettier/prettier */
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView,Alert,SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 
 const CreateAdScreen = () => {
     const [name, setName] = useState('');
@@ -19,7 +20,7 @@ const CreateAdScreen = () => {
     const [age, setAge] = useState('');
     const [contactName, setContactName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-
+    const [image,setImage] = useState('');
     const postData = async () => {
         try {
             await firestore().collection('ads')
@@ -31,105 +32,126 @@ const CreateAdScreen = () => {
                     age,
                     contactName,
                     contactNumber,
-                    image: 'https://i.guim.co.uk/img/media/684c9d087dab923db1ce4057903f03293b07deac/205_132_1915_1150/master/1915.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=14a95b5026c1567b823629ba35c40aa0',
+                    image,
                     uid: auth().currentUser.uid,
                 })
-                Alert.alert('posted your Ad!')
+            Alert.alert('posted your Ad!')
 
         }
         catch (err) {
             Alert.alert('Something went wrong. Try again!')
         }
     }
-    const accessCamera = ()=>{
-        launchCamera({quality:0.5},(fileobj)=>{
-            console.log(fileobj)
+    const accessCamera = () => {
+        launchCamera({ quality: 0.5 }, (fileobj) => {
+            // console.log(fileobj)
+            const uploadTask = storage().ref().child(`/items/${Date.now()}`).putFile(fileobj.uri)
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    if(progress === 100){
+                        alert('uploaded')
+                    }
+                   
+                },
+                (error) => {
+                    alert('Somthing went wrong')
+                },
+                () => {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        setImage(downloadURL)
+                    });
+                }
+            );
         })
     }
     return (
         <SafeAreaView>
-        <ScrollView >
+            <ScrollView >
 
-        <KeyboardAvoidingView behavior="position" style={styles.container}>
-       
-            <Text style={styles.textTag}>Create a Post</Text>
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Title"
-                value={name}
-                onChangeText={text => setName(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Type"
-                value={type}
-                onChangeText={text => setType(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Breed"
-                value={breed}
-                onChangeText={text => setBreed(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Age"
-                value={age}
-                keyboardType="numeric"
-                onChangeText={text => setAge(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Description"
-                numberOfLines={1}
-                multiline={true}
-                value={desc}
-                onChangeText={text => setDesc(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Contact Name"
-                value={contactName}
-                onChangeText={text => setContactName(text)}
-                mode="flat"
-            />
-            <TextInput
-                style={styles.textInpStyle}
-                underlineColor=""
-                label="Contact Number"
-                value={contactNumber}
-                keyboardType="numeric"
-                onChangeText={text => setContactNumber(text)}
-                mode="flat"
-            />
-            <Button icon="camera"
-                style={styles.btnStyle}
-                mode="contained"
-                onPress={() => accessCamera()}
-            >
-                UPLOAD IMAGE
+                <KeyboardAvoidingView behavior="position" style={styles.container}>
+
+                    <Text style={styles.textTag}>Create a Post</Text>
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Title"
+                        value={name}
+                        onChangeText={text => setName(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Type"
+                        value={type}
+                        onChangeText={text => setType(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Breed"
+                        value={breed}
+                        onChangeText={text => setBreed(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Age"
+                        value={age}
+                        keyboardType="numeric"
+                        onChangeText={text => setAge(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Description"
+                        numberOfLines={1}
+                        multiline={true}
+                        value={desc}
+                        onChangeText={text => setDesc(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Contact Name"
+                        value={contactName}
+                        onChangeText={text => setContactName(text)}
+                        mode="flat"
+                    />
+                    <TextInput
+                        style={styles.textInpStyle}
+                        underlineColor=""
+                        label="Contact Number"
+                        value={contactNumber}
+                        keyboardType="numeric"
+                        onChangeText={text => setContactNumber(text)}
+                        mode="flat"
+                    />
+                    <Button icon="camera"
+                        style={styles.btnStyle}
+                        mode="contained"
+                        onPress={() => accessCamera()}
+                    >
+                        UPLOAD IMAGE
         </Button>
-            <Button style={styles.btnStyle}
-                mode="contained"
-                onPress={() => postData()}
-            >
-                SUBMIT POST
+                    <Button disabled={image ? false : true} style={styles.btnStyle}
+                        mode="contained"
+                        onPress={() => postData()}
+                    >
+                        SUBMIT POST
         </Button>
 
-        </KeyboardAvoidingView>
-        </ScrollView>
-    </SafeAreaView>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
