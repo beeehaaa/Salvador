@@ -130,12 +130,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  // botBar:{
-  //   borderWidth: 1,
-  //   borderRadius : 35,
-  //   paddingBottom: 5,
-  //   marginTop: 5
-  // },
 });
 
 export default App;
